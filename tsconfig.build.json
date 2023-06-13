@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+	"compilerOptions": {
+    "rootDir": "./src",
+    "declaration": false,
+    "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "./"
+  },
+  "exclude": [
+		"node_modules",
+    "dist",
+    "test",
+    "coverage",
+    "coverage-e2e",
+    ".nyc_output",
+    "coverage-unit",
+    "**/*.spec.ts",
+    "**/*.fixture.ts",
+    "fixtures",
+    "jest.config.ts",
+    "jest.config.ci.ts",
+    "**/test.util.ts",
+		"commitlint.config.js",
+    "sonar-project.js"
+  ]
+}
