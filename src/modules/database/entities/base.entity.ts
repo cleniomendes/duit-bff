@@ -1,5 +1,4 @@
 import {
-  Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
@@ -13,9 +12,6 @@ export default class Base {
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt?: Date | string;
-
-  @Column()
-  updatedBy?: string;
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt?: Date | string;

@@ -13,6 +13,17 @@ export const getEnv = (): IConstants => ({
       url: process.env.INTEGRATION1_URL,
     },
   },
+  jestor: {
+    anprotec: {
+      url: process.env.ANPROTEC_URL,
+      token: process.env.ANPROTEC_TOKEN,
+      objectList: {
+        address: process.env.ANPROTEC_OBJECT_ID_ADDRESS,
+        people: process.env.ANPROTEC_OBJECT_ID_PEOPLE,
+        jobRole: process.env.ANPROTEC_OBJECT_ID_JOB_ROLE,
+      },
+    },
+  },
   database: {
     hostWrite: process.env.DATABASE_HOST,
     name: process.env.DATABASE_NAME,

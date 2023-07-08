@@ -2,6 +2,7 @@ interface IConstants {
   api: IConstantsAPI;
   integration: IIntegrationAPI;
   database: IConstantsDatabase;
+  jestor: IJestorAPI;
 }
 
 interface IConstantsAPI {
@@ -13,6 +14,18 @@ interface IConstantsAPI {
 interface IIntegrationAPI {
   integration1: {
     url: string;
+  };
+}
+
+interface IJestorAPI {
+  anprotec: {
+    url: string;
+    token: string;
+    objectList: {
+      address: string;
+      people: string;
+      jobRole: string;
+    };
   };
 }
 
@@ -29,4 +42,4 @@ interface IConstantsDatabase {
   };
 }
 
-export { IConstants, IConstantsAPI, IIntegrationAPI };
+export { IConstants, IConstantsAPI, IIntegrationAPI, IJestorAPI };
