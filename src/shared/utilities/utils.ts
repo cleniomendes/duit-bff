@@ -29,39 +29,42 @@ export function handleError(err: AxiosError, toLog = false): IRequestError {
   return error;
 }
 
-export function toSerialize(result, serializer, data = {}): any {
+export function toSerialize(data, serializer, result = {}): any {
   if (!serializer) return;
 
-  for (const key in result) {
-    if (result[key] instanceof Array) {
-      for (const cont in result[key]) {
-        if (typeof result[key][cont] !== 'object') {
-          Object.assign(data, { [key]: result[key] });
+  // Run each key
+  for (const key in data) {
+    // Check object is array and run function again for each item
+    if (data[key] instanceof Array) {
+      for (const cont in data[key]) {
+        if (typeof data[key][cont] !== 'object') {
+          Object.assign(result, { [key]: data[key] });
           return;
         }
 
         if (!serializer[key]) continue;
 
-        if (!data[key]) {
-          Object.assign(data, { [key]: [{}] });
+        if (!result[key]) {
+          Object.assign(result, { [key]: [{}] });
         } else {
-          data[key].push({});
+          result[key].push({});
         }
 
-        toSerialize(result[key][cont], serializer[key], data[key][cont]);
+        toSerialize(data[key][cont], serializer[key], result[key][cont]);
       }
     }
     if (key in serializer) {
-      if (result[key] instanceof Object) {
-        if (!data[key]) {
-          Object.assign(data, { [key]: {} });
+      // Check if is object and run function again for each item
+      if (data[key] instanceof Object) {
+        if (!result[key]) {
+          Object.assign(result, { [key]: {} });
         }
 
-        toSerialize(result[key], serializer[key], data[key]);
+        toSerialize(data[key], serializer[key], result[key]);
       } else {
-        Object.assign(data, { [key]: result[key] });
+        Object.assign(result, { [key]: data[key] });
       }
     }
   }
-  return data;
+  return result;
 }

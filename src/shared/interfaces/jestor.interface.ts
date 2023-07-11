@@ -18,3 +18,8 @@ export interface IJestorObjectListResponse {
     notifications: [];
   };
 }
+
+export interface IJestorObjectCreateRequest {
+  object_type: string;
+  data: object;
+}

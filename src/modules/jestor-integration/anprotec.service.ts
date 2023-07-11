@@ -4,7 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { getEnv } from '@shared/configuration/constants';
 import { SerializerRepository } from '@modules/database/repositories';
 import { JestorService } from '@modules/global/services';
-import { IJestorObjectListRequest } from '@src/shared/interfaces/jestor.interface';
+import {
+  IJestorObjectCreateRequest,
+  IJestorObjectListRequest,
+} from '@src/shared/interfaces/jestor.interface';
 import { SerializerEntity } from '@src/modules/database/entities';
 import { toSerialize } from '@src/shared/utilities/utils';
 
@@ -96,6 +99,39 @@ export class AnprotecService {
     }
 
     return { people: await this.mountObject(resultData, 'getPeople') };
+  }
+
+  async createJobRole(data: object): Promise<any> {
+    const { jobRole } = getEnv().jestor.anprotec.objectList;
+
+    const request: IJestorObjectCreateRequest = {
+      object_type: jobRole,
+      data,
+    };
+
+    return await this.jestorService.createObject(request);
+  }
+
+  async createAddress(data: object): Promise<any> {
+    const { address } = getEnv().jestor.anprotec.objectList;
+
+    const request: IJestorObjectCreateRequest = {
+      object_type: address,
+      data,
+    };
+
+    return await this.jestorService.createObject(request);
+  }
+
+  async createPeople(data: object): Promise<any> {
+    const { people } = getEnv().jestor.anprotec.objectList;
+
+    const request: IJestorObjectCreateRequest = {
+      object_type: people,
+      data,
+    };
+
+    return await this.jestorService.createObject(request);
   }
 
   async mountObject(resultData: any[], method: string): Promise<any> {

@@ -8,11 +8,12 @@ import { IntegrationError } from '@shared/errors/integration';
 import { getEnv } from '@shared/configuration/constants';
 import { handleError } from '@shared/utilities/utils';
 import {
+  IJestorObjectCreateRequest,
   IJestorObjectListRequest,
   IJestorObjectListResponse,
 } from '@src/shared/interfaces/jestor.interface';
 
-const { LIST_ALL } = REST_SERVICES.JESTOR;
+const { LIST_ALL, CREATE } = REST_SERVICES.JESTOR;
 
 @Injectable()
 export class JestorService {
@@ -29,6 +30,30 @@ export class JestorService {
       const { data } = await lastValueFrom(
         this.instance
           .post(`${baseUrl}/${LIST_ALL}`, params, {
+            headers: {
+              ...headers,
+            },
+          })
+          .pipe(map((res) => res)),
+      );
+
+      response = data;
+    } catch (err) {
+      throw new IntegrationError('jestor', handleError(err as AxiosError));
+    }
+
+    return response;
+  }
+
+  async createObject(params: IJestorObjectCreateRequest): Promise<unknown> {
+    let response = null;
+
+    const { baseUrl, headers } = this.getConfigs();
+
+    try {
+      const { data } = await lastValueFrom(
+        this.instance
+          .post(`${baseUrl}/${CREATE}`, params, {
             headers: {
               ...headers,
             },
