@@ -5,9 +5,7 @@ import { getEnv } from '@shared/configuration/constants';
 import { SerializerRepository } from '@modules/database/repositories';
 import { JestorService } from '@modules/global/services';
 import { IJestorObjectListRequest } from '@src/shared/interfaces/jestor.interface';
-import { SerializerEntity } from '../database/entities';
-import { BusinessError } from '@src/shared/errors';
-import { ErrorCodes } from '@src/shared/errors/business';
+import { SerializerEntity } from '@src/modules/database/entities';
 import { toSerialize } from '@src/shared/utilities/utils';
 
 @Injectable()
@@ -17,7 +15,7 @@ export class AnprotecService {
     private readonly jestorService: JestorService,
   ) {}
 
-  async getAddress(): Promise<any> {
+  async getAllAddress(): Promise<any> {
     const resultData = [];
     const { address } = getEnv().jestor.anprotec.objectList;
 
@@ -43,6 +41,61 @@ export class AnprotecService {
     }
 
     return { address: await this.mountObject(resultData, 'getAddress') };
+  }
+
+  async getAllJobRole(): Promise<any> {
+    const resultData = [];
+    const { jobRole } = getEnv().jestor.anprotec.objectList;
+
+    const request: IJestorObjectListRequest = {
+      object_type: jobRole,
+      page: 1,
+      size: 100,
+    };
+
+    let allJobRoles = await this.jestorService.getObjectList(request);
+
+    if (allJobRoles.data?.items?.length)
+      resultData.push(...allJobRoles.data.items);
+
+    while (allJobRoles.data?.has_more) {
+      request.page++;
+
+      allJobRoles = await this.jestorService.getObjectList(request);
+
+      if (allJobRoles.data?.items?.length) {
+        resultData.push(...allJobRoles.data.items);
+      }
+    }
+
+    return { jobRoles: await this.mountObject(resultData, 'getJobRole') };
+  }
+
+  async getAllPeople(): Promise<any> {
+    const resultData = [];
+    const { people } = getEnv().jestor.anprotec.objectList;
+
+    const request: IJestorObjectListRequest = {
+      object_type: people,
+      page: 1,
+      size: 100,
+    };
+
+    let allPeople = await this.jestorService.getObjectList(request);
+
+    if (allPeople.data?.items?.length) resultData.push(...allPeople.data.items);
+
+    while (allPeople.data?.has_more) {
+      request.page++;
+
+      allPeople = await this.jestorService.getObjectList(request);
+
+      if (allPeople.data?.items?.length) {
+        resultData.push(...allPeople.data.items);
+      }
+    }
+
+    return { people: await this.mountObject(resultData, 'getPeople') };
   }
 
   async mountObject(resultData: any[], method: string): Promise<any> {

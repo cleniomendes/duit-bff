@@ -8,7 +8,17 @@ export class AnprotecController {
   constructor(private readonly anprotecService: AnprotecService) {}
 
   @Get('/address')
-  async getAll(@Req() req: Request): Promise<unknown> {
-    return this.anprotecService.getAddress();
+  async getAllAddress(@Req() req: Request): Promise<unknown> {
+    return this.anprotecService.getAllAddress();
+  }
+
+  @Get('/jobRole')
+  async getAllJobRole(@Req() req: Request): Promise<unknown> {
+    return this.anprotecService.getAllJobRole();
+  }
+
+  @Get('/people')
+  async getAllPeople(@Req() req: Request): Promise<unknown> {
+    return this.anprotecService.getAllPeople();
   }
 }
