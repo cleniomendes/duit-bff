@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
-import { FirstIntegrationModule } from '@modules/first-integration';
+import { AnprotecModule } from '@modules/jestor-integration';
+import { GlobalModule } from '@modules/global';
+import { DatabaseModule } from '@modules/database';
 
-const imports = [FirstIntegrationModule];
+const imports = [
+  new DatabaseModule().init().then((o) => o),
+  AnprotecModule,
+  GlobalModule,
+];
 
 const controllers = [];
 
-const providers = [FirstIntegrationModule];
+const providers = [AnprotecModule, GlobalModule];
 
 @Module({
   imports,
